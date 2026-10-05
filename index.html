@@ -1148,7 +1148,7 @@ draw();ins();
 })();
 /* ===== Playground · Reads (Hardcover via /api/reads) ===== */
 (function(){
-const HC={handle:''};/* your Hardcover username, optional, for the follow link */
+const HC={handle:'olurotimi'};/* your Hardcover username, optional, for the follow link */
 const g=id=>document.getElementById(id),esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),B=g('rdb');
 const cover=(b,p)=>b&&b.cover?'<div class="bk"><img src="'+esc(b.cover)+'" alt="'+esc(b.title)+' cover" loading="lazy"></div>':'<div class="bk">'+(p||esc(b&&b.title||'[Cover]'))+'</div>';
 const bar=p=>'<div class="seg10" role="img" aria-label="'+Math.round(p)+' percent read">'+Array.from({length:10},(_,i)=>'<i class="'+(i<p/10?'f':'')+'"></i>').join('')+'</div>';
