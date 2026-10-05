@@ -442,6 +442,18 @@ html.cv #cv .csec .frame{margin:0;max-height:calc((100vh - 200px)/var(--z,1));ov
 .igf{padding:clamp(16px,3vw,24px)}.igh{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px}.igh b{font:600 clamp(20px,3vw,26px)/1.2 'Lexend',system-ui,sans-serif}.igh a{font-size:12px;color:var(--ink)}
 .igg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.igg a,.igg div{position:relative;display:block;aspect-ratio:1;border-radius:10px;overflow:hidden;background:var(--line)}.igg img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .4s var(--liq)}.igg a:hover img{transform:scale(1.05)}.igg div{display:grid;place-items:center;font-size:11px;color:var(--soft);opacity:.6}
 
+/* IG upgrades + journey */
+.igr{display:flex;align-items:center;gap:12px}.igh button[hidden]{display:none}.igg a{cursor:zoom-in}
+@media (max-width:640px){.igg{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:8px;margin:0 calc(-1*clamp(16px,3vw,24px));padding:0 clamp(16px,3vw,24px) 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.igg::-webkit-scrollbar{display:none}.igg a,.igg div{flex:0 0 72%;scroll-snap-align:center}}
+@media (prefers-reduced-motion:no-preference){.igg.sh a{animation:pop .45s cubic-bezier(.34,1.56,.64,1) both;rotate:var(--t,0deg)}}
+.igv{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:16px}.igv[hidden]{display:none}.igb{position:absolute;inset:0;background:#000c}
+.igc{position:relative;margin:0;width:min(440px,100%);max-height:100%;display:flex;flex-direction:column;gap:10px;background:#FBFAF6;color:#1C160E;border-radius:4px;padding:14px 14px 18px;box-shadow:0 24px 60px #0008;rotate:-2deg}@media (prefers-reduced-motion:no-preference){.igv:not([hidden]) .igc{animation:igd .5s cubic-bezier(.34,1.56,.64,1)}}@keyframes igd{from{opacity:0;transform:translateY(40px) rotate(6deg) scale(.9)}}
+.igc img{display:block;width:100%;max-height:56vh;object-fit:cover;border-radius:0;background:#e8e4da;box-shadow:inset 0 0 0 1px #0002}.igc figcaption{font:400 12px/1.5 'Silkscreen','Lexend',monospace;letter-spacing:.04em;color:#3a3226;max-height:4.5em;overflow:auto;padding:4px 2px 0}
+.igp{display:flex;align-items:center;justify-content:space-between;gap:10px}.igp button{width:44px;height:44px;border:2px solid #1C160E;border-radius:0;background:#FBFAF6;color:#1C160E;cursor:pointer;font-size:14px;box-shadow:2px 2px 0 #1C160E}.igp button:active{transform:translate(2px,2px);box-shadow:none}.igp a{font-size:13px;color:#1C160E;text-decoration:underline}
+.igx{position:absolute;top:20px;right:20px;width:44px;height:44px;border:0;border-radius:50%;background:#000a;color:#fff;font-size:22px;cursor:pointer}
+.trk::after{content:'';position:absolute;left:0;top:70px;z-index:0;width:var(--p,0%);border-top:4px solid var(--or);transition:width .9s steps(10)}.trk .nd,.trk .stc{z-index:1}
+.lvl .pu{border-style:solid;border-color:var(--or);font:500 16px/1.35 'Lexend',system-ui,sans-serif;color:var(--ink)}
+
 /* v6 */
 .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .fch{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.fch b,.mnh b{font:600 clamp(20px,3vw,26px)/1.2 'Lexend',system-ui,sans-serif}
@@ -716,11 +728,11 @@ button.avmore{background:none;border:0;padding:0;cursor:pointer;font:inherit;fon
 <div class="nwh"><span class="nwl"><i></i>NP-1</span><span id="nws">YouTube Music</span></div>
 <div class="nwsc"><div class="nwc" id="nwc" hidden></div><div class="nwx"><p class="nwk" id="nwk">Standby</p><p class="nwt" id="nwt"><span>Waiting for a signal</span></p><p class="nwa" id="nwa">&nbsp;</p><div class="nwm" id="nwm" aria-hidden="true"></div></div></div>
 <div class="nwr"><button class="nwd" id="nwd" type="button" aria-label="Turn the dial"><span></span></button><div class="nwg" aria-hidden="true"></div><a class="nwb" id="nwo" href="https://music.youtube.com" target="_blank" rel="noopener"><b>Open</b><small>YT Music</small></a></div></div></section>
-<section id="pl-ig" class="sec"><p class="lab">Instagram</p><div class="frame igf"><div class="igh"><b>Off the grid</b><a id="igl" href="#" target="_blank" rel="noopener" hidden>Follow ↗</a></div><div class="igg" id="igg"></div></div></section>
+<section id="pl-ig" class="sec"><p class="lab">Instagram</p><div class="frame igf"><div class="igh"><b>Off the grid</b><span class="igr"><button class="pill2" id="igs" type="button" hidden>Shuffle ↻</button><a id="igl" href="#" target="_blank" rel="noopener" hidden>Follow ↗</a></span></div><div class="igg" id="igg"></div></div></section>
 <section id="pl-journal" class="sec"><p class="lab">Notes by Mario</p><div class="mnx"><div class="mmar" id="mmar" role="img" aria-label="Mario"></div><div class="frame mn"><div class="mnh"><b>Notes by Mario</b><span id="mnc"></span></div><div class="mnb" id="mnb"><svg class="mnw" viewBox="0 0 400 300" aria-hidden="true"><rect x="12" y="12" width="376" height="276" rx="8" fill="var(--frame)" stroke="var(--line)"/><rect x="32" y="30" width="56" height="10" rx="3" fill="var(--ink)"/><rect x="240" y="32" width="26" height="6" rx="3" fill="var(--line)"/><rect x="278" y="32" width="26" height="6" rx="3" fill="var(--line)"/><rect x="316" y="32" width="26" height="6" rx="3" fill="var(--line)"/><rect x="32" y="72" width="200" height="18" rx="3" fill="var(--ink)"/><rect x="32" y="98" width="150" height="18" rx="3" fill="var(--ink)"/><rect x="32" y="130" width="214" height="6" rx="3" fill="var(--line)"/><rect x="32" y="144" width="190" height="6" rx="3" fill="var(--line)"/><rect x="32" y="158" width="206" height="6" rx="3" fill="var(--line)"/><rect x="32" y="180" width="84" height="26" rx="13" fill="var(--or)"/><rect x="262" y="72" width="104" height="132" rx="6" fill="none" stroke="var(--line)" stroke-dasharray="4 4"/><path d="M262 72l104 132M366 72L262 204" stroke="var(--line)"/><rect x="32" y="222" width="104" height="48" rx="6" fill="none" stroke="var(--line)"/><rect x="148" y="222" width="104" height="48" rx="6" fill="none" stroke="var(--line)"/><rect x="264" y="222" width="104" height="48" rx="6" fill="none" stroke="var(--line)"/></svg><div id="mnp"></div></div><div class="mnd" id="mnd" role="dialog" aria-label="Note" hidden></div><p class="mnt">Tap a sticker to open a note. Resolve it to clear the thread.</p></div></div></section>
 <section id="pl-char" class="sec"><p class="lab">Pixel me</p><div class="frame chf"><div class="chw"><div class="chs" id="chs"><svg id="chv" viewBox="0 0 16 16" role="img" aria-label="Your pixel character"></svg><span class="chn">You · 16×16</span></div><div class="chc"><div class="fch"><b>Build your character</b><div class="gct"><button class="ib" id="chm" type="button" aria-label="Reset to Mario" title="Reset to Mario"><svg class="pxi" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 0h3v1h-3zM7 0h3v1h-3zM1 1h1v1h-1zM8 1h2v1h-2zM0 2h1v1h-1zM9 2h1v1h-1zM0 3h1v1h-1zM9 3h1v1h-1zM0 4h1v1h-1zM9 4h1v1h-1zM0 5h1v1h-1zM9 5h1v1h-1zM1 6h1v1h-1zM8 6h1v1h-1zM2 7h1v1h-1zM7 7h1v1h-1zM3 8h4v1h-4z"/></svg></button><button class="ib" id="chr" type="button" aria-label="Spin for a new avatar" title="Pull the lever"><svg class="lvr" viewBox="0 0 12 12" aria-hidden="true"><rect class="st" x="5" y="3" width="2" height="5"/><rect class="bl" x="3" y="0" width="6" height="3"/><rect x="1" y="8" width="10" height="2"/><rect x="0" y="10" width="12" height="2"/></svg></button></div></div><div id="chp"></div><div class="chb"><button class="pill2" id="chf" type="button" aria-pressed="false">Take it with you</button><span class="chh">It tags along with your cursor. Click anywhere to make it hop.</span></div></div></div></div></section>
 <section id="pl-game" class="sec"><p class="lab">Pixel pong</p><div class="frame gmf"><div class="fch"><b>Pixel Pong</b><div class="gct"><div class="pxt" id="pgm" role="group" aria-label="Difficulty"><button type="button" data-m="0" aria-pressed="true">EASY</button><button type="button" data-m="1" aria-pressed="false">HARD ×2</button></div><button class="ib" id="pgx" type="button" aria-label="Stop game" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12"/></svg></button><button class="ib" id="pgs" type="button" aria-pressed="false" aria-label="Sound off"></button></div></div><div class="gmw"><div class="pgw" id="pgw"><div class="pgo" id="pgo"><b>PIXEL PONG</b><p>The game is off until you start it.</p><button class="pgp" id="pgp" type="button">▶ PLAY</button></div><canvas id="pgc" aria-label="Ping pong game. Move with W and S, the arrow keys, or by dragging."></canvas><form class="gsub" id="sub" hidden><span class="px" id="subs"></span><input id="subi" maxlength="3" autocomplete="off" aria-label="Your initials" placeholder="AAA"><button class="mini" type="submit">Save</button><button class="mini" type="button" id="subx">Skip</button></form></div><aside class="lb"><div class="lbh px"><span>TOP 10</span><span id="lbs"></span></div><div class="lbz" id="lbe"><svg class="lbzi" viewBox="0 0 10 10" aria-hidden="true"><path d="M0 0h1v1h-1zM2 0h6v1h-6zM9 0h1v1h-1zM0 1h1v1h-1zM2 1h6v1h-6zM9 1h1v1h-1zM0 2h1v1h-1zM2 2h6v1h-6zM9 2h1v1h-1zM1 3h1v1h-1zM3 3h4v1h-4zM8 3h1v1h-1zM2 4h6v1h-6zM3 5h4v1h-4zM4 6h2v1h-2zM4 7h2v1h-2zM2 8h6v1h-6zM2 9h6v1h-6z"/></svg><b class="px">NO SCORES YET</b><p>Win a match and save your initials to take the first spot.</p></div><ol id="lbl" hidden></ol><div class="lgd"><p><b class="px">HARD</b><span>= double points</span></p><p><b class="px x">✕</b><span>= delete your score</span></p></div></aside></div><div class="ctl" id="ctl" role="group" aria-label="Game controls"><div class="ctl-h px"><span>HOW TO PLAY</span><span class="coin">PRESS PLAY</span></div><div class="ctl-b"><div class="ctc"><p class="px ctt">MOVE</p><div class="ctk kbo"><kbd data-k="w">W</kbd><kbd data-k="s">S</kbd><i>or</i><kbd data-k="arrowup" aria-label="Up arrow">&#8593;</kbd><kbd data-k="arrowdown" aria-label="Down arrow">&#8595;</kbd></div><div class="ctk"><kbd class="kbo">MOUSE</kbd><i class="kbo">or</i><kbd>DRAG</kbd></div><p class="ctn">The paddle follows your keys, mouse or thumb.</p></div><div class="ctc"><p class="px ctt">SERVE</p><div class="ctk"><kbd class="kbo sp" data-k=" ">SPACE</kbd><i class="kbo">or</i><kbd>TAP</kbd></div><p class="ctn">Starts every rally. Win one to make the next faster.</p></div><div class="ctc"><p class="px ctt">WIN</p><div class="ctk"><kbd class="big">7</kbd><span class="ctw">points first</span></div><p class="ctn">Hard mode doubles your score.</p></div></div><p class="ctf">Let's Play! <a href="#pl-char">Change character</a></p></div></div></section>
-<section id="pl-story" class="sec"><p class="lab">Origin story</p><div class="frame stf"><div class="fch"><b>World 1: how I got here</b><span class="px" id="stk"></span></div><div class="trk" id="trk"></div><div id="stpn" aria-live="polite"></div></div></section>
+<section id="pl-story" class="sec"><p class="lab">Journey</p><div class="frame stf"><div class="fch"><b>The journey so far</b><span class="px" id="stk"></span></div><div class="trk" id="trk"></div><div id="stpn" aria-live="polite"></div></div></section>
 <section id="pl-arch" class="sec"><p class="lab">Creative archive</p><div class="frame arf"><div class="fch"><b>The archive</b><div class="pxt" id="axf" role="group" aria-label="Filter archive"></div></div><div class="awl" id="awl"></div><div class="ins" id="ins"></div></div></section>
 <section id="pl-reads" class="sec"><p class="lab">On the shelf</p><div class="frame rdf"><div class="fch"><b>On the shelf</b><a id="rdl" class="px" href="#" target="_blank" rel="noopener" hidden></a></div><div id="rdb"></div></div></section>
 
@@ -1005,17 +1017,30 @@ document.addEventListener('pointerdown',e=>{if(fe){tx=e.clientX+22;ty=e.clientY+
 let la='';document.addEventListener('px:accent',()=>{if(window.__acc===la)return;la=window.__acc;if(OC[S.oc]==='theme')upd(true)});
 upd();
 })();
-/* ===== Playground · Instagram feed ===== */
+/* ===== Playground · Instagram feed (swipe strip, viewer, shuffle) ===== */
 (function(){
-/* feed: URL of a JSON feed (Behold.so feed URL, or your own /api/instagram) returning {posts:[{permalink,mediaUrl,thumbnailUrl,caption}]} */
 const IG={handle:'olurotimii',feed:'https://feeds.behold.so/VJFSIcsBoPsWxsIx0r47'};
 const g=id=>document.getElementById(id),esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const G=g('igg'),l=g('igl'),tag=i=>'<i>IG·'+String(i+1).padStart(2,'0')+'</i>';
+const G=g('igg'),l=g('igl'),sb=g('igs'),tag=i=>'<i>IG·'+String(i+1).padStart(2,'0')+'</i>';
+let all=[],P=[],cur=0,from=null,tx=0;
 G.innerHTML=Array.from({length:6},(_,i)=>'<div class="ph" aria-hidden="true">'+tag(i)+'</div>').join('');
 l.href='https://www.instagram.com/'+IG.handle;l.textContent='Follow @'+IG.handle+' ↗';l.hidden=false;
+const render=()=>{G.innerHTML=P.map((p,i)=>'<a href="'+esc(p.u)+'" data-i="'+i+'" target="_blank" rel="noopener" aria-label="View post: '+esc(p.a)+'">'+tag(i)+'<img src="'+esc(p.i)+'" alt="'+esc(p.a)+'" loading="lazy" decoding="async"></a>').join('')};
+const V=document.createElement('div');V.className='igv';V.hidden=true;V.setAttribute('role','dialog');V.setAttribute('aria-modal','true');V.setAttribute('aria-label','Instagram post');
+V.innerHTML='<div class="igb" data-x="1"></div><figure class="igc"><button class="igx" type="button" data-x="1" aria-label="Close">×</button><img alt=""><figcaption></figcaption><div class="igp"><button type="button" data-n="-1" aria-label="Previous post">◀</button><a target="_blank" rel="noopener">Open on Instagram ↗</a><button type="button" data-n="1" aria-label="Next post">▶</button></div></figure>';
+document.body.appendChild(V);
+const vi=V.querySelector('img'),vc=V.querySelector('figcaption'),vl=V.querySelector('.igp a'),vx=V.querySelector('.igx');
+function openV(i){if(!P.length)return;cur=(i+P.length)%P.length;const p=P[cur];vi.src=p.i;vi.alt=p.a;vc.textContent=p.c;vl.href=p.u;if(V.hidden){from=document.activeElement;V.hidden=false;document.documentElement.style.overflow='hidden';vx.focus()}}
+function closeV(){V.hidden=true;document.documentElement.style.overflow='';if(from&&from.focus)from.focus()}
+G.addEventListener('click',e=>{const a=e.target.closest('a[data-i]');if(a){e.preventDefault();openV(+a.dataset.i)}});
+V.addEventListener('click',e=>{if(e.target.closest('[data-x]'))return closeV();const n=e.target.closest('[data-n]');if(n)openV(cur+ +n.dataset.n)});
+V.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX},{passive:true});
+V.addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)openV(cur+(d<0?1:-1))},{passive:true});
+document.addEventListener('keydown',e=>{if(V.hidden)return;if(e.key==='Escape')closeV();else if(e.key==='ArrowRight')openV(cur+1);else if(e.key==='ArrowLeft')openV(cur-1)});
+sb.addEventListener('click',()=>{if(all.length<2)return;const a=all.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}P=a.slice(0,6);G.classList.remove('sh');void G.offsetWidth;G.classList.add('sh');render();G.querySelectorAll('a').forEach(a=>a.style.setProperty('--t',(Math.random()*6-3).toFixed(1)+'deg'));G.scrollLeft=0});
 fetch(IG.feed||'/api/instagram').then(r=>r.ok?r.json():Promise.reject()).then(d=>{
-const P=(d.posts||d).map(p=>({u:p.permalink||p.url,i:(p.sizes&&p.sizes.medium&&p.sizes.medium.mediaUrl)||p.thumbnailUrl||p.mediaUrl||p.img,a:(p.caption||p.alt||'Instagram post').slice(0,90)})).filter(p=>p.u&&p.i).slice(0,6);
-if(P.length)G.innerHTML=P.map((p,i)=>'<a href="'+esc(p.u)+'" target="_blank" rel="noopener">'+tag(i)+'<img src="'+esc(p.i)+'" alt="'+esc(p.a)+'" loading="lazy" decoding="async"></a>').join('')}).catch(()=>{});
+all=(d.posts||d).map(p=>({u:p.permalink||p.url,i:(p.sizes&&p.sizes.medium&&p.sizes.medium.mediaUrl)||p.thumbnailUrl||p.mediaUrl||p.img,a:(p.caption||p.alt||'Instagram post').slice(0,90),c:(p.caption||p.alt||'').slice(0,240)})).filter(p=>p.u&&p.i).slice(0,12);
+P=all.slice(0,6);if(P.length){render();sb.hidden=all.length<2}}).catch(()=>{});
 })();
 
 /* ===== Playground · Pixel Pong ===== */
@@ -1099,22 +1124,28 @@ else{const L=local().filter(x=>x.id!==id);try{localStorage[LS]=JSON.stringify(L)
 delete own[id];keep();lbDraw()});
 
 })();
-/* ===== Playground · Origin story (replace the [brackets] with your own) ===== */
+/* ===== Playground · Journey (career timeline, walks itself on first view) ===== */
 (function(){
 const L=[
-{k:'1-1',t:'Player One',h:'The console in the living room',b:'[Write 2–3 sentences: which console, roughly what year, and who shared the couch with you.]',p:'[Photo or sketch: the console, the TV, or the room it lived in]'},
-{k:'1-2',t:'Button mashing',h:'When the interface felt like magic',b:'[Describe one detail that stuck: a menu sound, a health bar, a loading screen, the way a button felt. Why it mattered to you.]',p:'[Screenshot of that game moment, or a pixel redraw of it]'},
-{k:'1-3',t:'Boss fight',h:'The project that fought back',b:'[Pick one project (SOMA, Lykluk, Yadsale or Revolve) and tell it like a boss fight: the obstacle, the pattern you learned, the win.]',p:'[Image: a before/after, or the sketch that cracked it]'},
-{k:'1-4',t:'Continue?',h:'How that kid still runs the studio',b:'[One honest paragraph: the standards from those games that show up in your design now, and what you want to build next.]',p:'[Image: a recent favourite frame, or you at the desk]',cta:1}];
-const g=id=>document.getElementById(id),T=g('trk'),Pn=g('stpn');let cur=0;const seen=new Set([0]);
-T.innerHTML=L.map((l,i)=>'<button class="nd" type="button" data-i="'+i+'" style="left:'+(i/(L.length-1)*100)+'%" aria-label="Level '+l.k+': '+l.t+'"><span>'+l.k+'</span></button>').join('')+'<div class="stc" id="stc"></div>';
+{y:'Oct 21',k:'LEVEL 1',d:'Oct 2021 to Mar 2024',t:'SoftStructures',h:'UI/UX & Product Designer · Lagos',b:'Led end-to-end product design for Scout4Job, a recruitment platform that grew to about 6,000 registrations in six months, and designed NeüRMS, retail software built for Nigerian SMEs.',p:'Scout4Job: ~6,000 sign-ups in six months'},
+{y:'Nov 23',k:'LEVEL 2',d:'Nov 2023 to Aug 2025',t:'Freelance',h:'Independent Brand & Product Designer',b:'Went solo on brand and product work: Popin\'s identity and product, PolarRide\'s UX/UI redesign and systems architecture, and Fitnest\'s style guide in a one-month engagement.',p:'PolarRide: shipped at a launch event in Maryland'},
+{y:'Jan 24',k:'LEVEL 3',d:'Jan 2024 to now',t:'TheBrand™',h:'Creative Director & Design Lead',b:'Run a creative and product agency: Lykluk\'s full app and design system, the Revolve brand identity, and a complete rebrand for Project I-Q Services that has generated fresh leads.',p:'Lykluk: the live app still runs on these designs'},
+{y:'Sep 24',k:'LEVEL 4',d:'Sep 2024 to Oct 2025',t:'Reboot Monkey',h:'UI/UX Designer & IT Project Manager · Haarlem, NL (Remote)',b:'Rebuilt the company website into a brand-aligned design system and owned a custom internal project management and HR tool from research to final testing.',p:'One design system, one internal tool, end to end'},
+{y:'2026',k:'LEVEL 5',d:'2026 to now',t:'SOMA',h:'Brand & Design Director',b:'Designing an offline-first school operating system for Nigerian secondary schools: product architecture, UX, brand and go-to-market. Currently in beta.',p:'Offline-first, built for Nigerian schools',cta:1}];
+const g=id=>document.getElementById(id),T=g('trk'),Pn=g('stpn'),rm=matchMedia('(prefers-reduced-motion:reduce)');let cur=0,timer=null;const seen=new Set([0]);
+T.innerHTML=L.map((l,i)=>'<button class="nd" type="button" data-i="'+i+'" style="left:'+(i/(L.length-1)*100)+'%" aria-label="'+l.k+': '+l.t+'"><span>'+l.y+'</span></button>').join('')+'<div class="stc" id="stc"></div>';
 const ch=g('stc'),nd=[...T.querySelectorAll('.nd')];
 const sprite=()=>{ch.innerHTML=PX.svg().replace('xmlns="http://www.w3.org/2000/svg" ','')};document.addEventListener('px:update',sprite);sprite();
-function show(i){const l=L[i];cur=i;seen.add(i);ch.style.left=(i/(L.length-1)*100)+'%';ch.classList.remove('w');void ch.offsetWidth;ch.classList.add('w');
+const stop=()=>{if(timer){clearInterval(timer);timer=null}};
+function show(i){const l=L[i];cur=i;seen.add(i);const p=(i/(L.length-1)*100)+'%';ch.style.left=p;T.style.setProperty('--p',p);ch.classList.remove('w');void ch.offsetWidth;ch.classList.add('w');
 nd.forEach((n,j)=>{n.classList.toggle('v',seen.has(j));j===i?n.setAttribute('aria-current','step'):n.removeAttribute('aria-current')});
 g('stk').textContent='COINS '+seen.size+' / '+L.length;
-Pn.innerHTML='<div class="lvl"><div><p class="k">WORLD '+l.k+'</p><h3>'+l.t+'</h3><h4>'+l.h+'</h4><p>'+l.b+'</p><div class="lvb">'+(i>0?'<button class="pill2" data-s="-1" type="button">◀ Back</button>':'')+(l.cta?'<a class="btn p" href="#contact">Press start: let\'s talk</a>':'<button class="pill2" data-s="1" type="button">Next level ▶</button>')+'</div></div><div class="pu"><div><b>POWER-UP</b>'+l.p+'</div></div></div>'}
-T.addEventListener('click',e=>{const b=e.target.closest('.nd');if(b)show(+b.dataset.i)});Pn.addEventListener('click',e=>{const b=e.target.closest('[data-s]');if(b)show(cur+ +b.dataset.s)});show(0);
+Pn.innerHTML='<div class="lvl"><div><p class="k">'+l.k+' · '+l.d.toUpperCase()+'</p><h3>'+l.t+'</h3><h4>'+l.h+'</h4><p>'+l.b+'</p><div class="lvb">'+(i>0?'<button class="pill2" data-s="-1" type="button">◀ Back</button>':'')+(l.cta?'<a class="btn p" href="#contact">Press start: let\'s talk</a>':'<button class="pill2" data-s="1" type="button">Next level ▶</button>')+'</div></div><div class="pu"><div><b>POWER-UP</b>'+l.p+'</div></div></div>'}
+T.addEventListener('click',e=>{const b=e.target.closest('.nd');if(b){stop();show(+b.dataset.i)}});
+Pn.addEventListener('click',e=>{const b=e.target.closest('[data-s]');if(b){stop();show(clampI(cur+ +b.dataset.s))}});
+const clampI=i=>Math.max(0,Math.min(L.length-1,i));
+show(0);
+if('IntersectionObserver' in window&&!rm.matches){const io=new IntersectionObserver(es=>{if(!es[0].isIntersecting)return;io.disconnect();let i=0;timer=setInterval(()=>{i++;if(i>=L.length)return stop();show(i)},1800)},{threshold:.5});io.observe(g('pl-story'))}
 })();
 /* ===== Playground · Creative archive (edit A; swap the placeholders for real work) ===== */
 (function(){
@@ -1148,7 +1179,7 @@ draw();ins();
 })();
 /* ===== Playground · Reads (Hardcover via /api/reads) ===== */
 (function(){
-const HC={handle:'olurotimi'};/* your Hardcover username, optional, for the follow link */
+const HC={handle:''};/* your Hardcover username, optional, for the follow link */
 const g=id=>document.getElementById(id),esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),B=g('rdb');
 const cover=(b,p)=>b&&b.cover?'<div class="bk"><img src="'+esc(b.cover)+'" alt="'+esc(b.title)+' cover" loading="lazy"></div>':'<div class="bk">'+(p||esc(b&&b.title||'[Cover]'))+'</div>';
 const bar=p=>'<div class="seg10" role="img" aria-label="'+Math.round(p)+' percent read">'+Array.from({length:10},(_,i)=>'<i class="'+(i<p/10?'f':'')+'"></i>').join('')+'</div>';
@@ -1189,4 +1220,4 @@ grid.addEventListener('click',e=>{const b=e.target.closest('[data-p]');if(b){e.s
 /* links in the panel (build your own, archive, game) close it after navigating */
 g('pop').addEventListener('click',e=>{if(e.target.closest('a')&&g('pop').classList.contains('open'))setTimeout(()=>pf.click(),0)});
 })();
-</script></body></html> 
+</script></body></html>
