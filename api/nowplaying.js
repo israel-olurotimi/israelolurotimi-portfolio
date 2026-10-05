@@ -2,8 +2,7 @@ module.exports = async (req, res) => {
   try {
     const key = (process.env.LASTFM_API_KEY || '').trim();
     const user = (process.env.LASTFM_USER || '').trim();
-    if (!key || !user) throw new Error('missing env var');
-
+    if (!key || !user) throw new Error('missing: ' + (!key ? 'LASTFM_API_KEY ' : '') + (!user ? 'LASTFM_USER' : ''));
     const r = await fetch(
       'https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&limit=1&format=json&user=' +
         encodeURIComponent(user) +
