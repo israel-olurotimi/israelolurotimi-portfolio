@@ -18,6 +18,7 @@ module.exports = async (req, res) => {
 
     const r = await fetch('https://api.hardcover.app/v1/graphql', {
       method: 'POST',
+      signal: AbortSignal.timeout(8000),
       headers: { 'Content-Type': 'application/json', authorization: token },
       body: JSON.stringify({ query })
     });
@@ -53,6 +54,6 @@ module.exports = async (req, res) => {
     res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
     res.status(200).json({ current, read });
   } catch (e) {
-    res.status(502).json({ error: 'feed', why: String(e.message) });
+    res.status(502).json({ error: 'feed', unavailable: true });
   }
 };

@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
       'https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&limit=1&format=json&user=' +
         encodeURIComponent(user) +
         '&api_key=' +
-        encodeURIComponent(key)
+        encodeURIComponent(key), {signal: AbortSignal.timeout(8000)}
     );
     const data = await r.json();
     if (!r.ok || data.error) throw new Error('lastfm: ' + (data.message || r.status));
@@ -29,6 +29,6 @@ module.exports = async (req, res) => {
       at: playing || !t.date ? null : +t.date.uts
     });
   } catch (e) {
-    res.status(502).json({ error: 'feed', why: String(e.message) });
+    res.status(502).json({ error: 'feed', unavailable: true });
   }
 };
