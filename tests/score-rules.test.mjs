@@ -33,3 +33,20 @@ test('rejects malformed names and sanitizes initials', () => {
   assert.equal(validateScoreSubmission({ ...valid, n: 'a' }).error, 'bad score');
   assert.equal(validateScoreSubmission({ ...valid, n: 'ma*' }).n, 'MA');
 });
+
+test('malformed request JSON returns a client error', async () => {
+  process.env.KV_REST_API_URL = 'https://example.invalid';
+  process.env.KV_REST_API_TOKEN = 'local-test-token';
+  const { default: handler } = await import('../api/scores.mjs?invalid-json-test');
+  let statusCode;
+  let responseBody;
+  const res = {
+    setHeader() {},
+    status(code) { statusCode = code; return this; },
+    json(body) { responseBody = body; return this; },
+  };
+
+  await handler({ method: 'POST', body: '{invalid', headers: {} }, res);
+  assert.equal(statusCode, 400);
+  assert.deepEqual(responseBody, { error: 'bad request' });
+});
