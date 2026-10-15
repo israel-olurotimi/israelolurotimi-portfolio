@@ -5,7 +5,7 @@ import { randomBytes, createHash } from 'node:crypto';
 
 const URL_ = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
-// Preview deploys use their own keys so test scores never reach the live board.
+// Separate Redis key prefixes for production and preview scores.
 const P = process.env.VERCEL_ENV === 'production' ? 'pong' : 'pongdev';
 const Z = P + ':scores', KEEP = 50, SHOW = 10;
 
@@ -58,7 +58,15 @@ export default async function handler(req, res) {
   try {
     if (req.method === 'GET') return res.status(200).json({ scores: await top() });
 
-    const b = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : req.body || {};
+    let b;
+    try {
+      b = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : req.body || {};
+    } catch {
+      return res.status(400).json({ error: 'bad request' });
+    }
+    if (!b || typeof b !== 'object' || Array.isArray(b)) {
+      return res.status(400).json({ error: 'bad request' });
+    }
 
     if (req.method === 'POST') {
       const result = validateScoreSubmission(b);
