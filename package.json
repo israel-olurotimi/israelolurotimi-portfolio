@@ -1,0 +1,13 @@
+{
+  "name": "israel-olurotimi-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Portfolio source checks",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "check:syntax": "node --check api/nowplaying.js && node --check api/reads.js && node --check api/scores.mjs && node --check sw.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
