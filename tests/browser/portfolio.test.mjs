@@ -28,7 +28,7 @@ test('desktop loads portfolio, case study and CV without script errors', { timeo
     assert.equal(await page.locator('#cs').count(), 1);
     const cv = page.locator('a[href*="/assets/downloads/Israel_Olurotimi_CV_Product_Design.pdf"]').first();
     const href = await cv.getAttribute('href');
-    const downloadResponse = await page.request.get(new URL(href, baseURL));
+    const downloadResponse = await page.request.get(new URL(href, baseURL).toString());
     assert.equal(downloadResponse.status(), 200);
     assert.match(downloadResponse.headers()['content-type'] || '', /pdf/);
 
