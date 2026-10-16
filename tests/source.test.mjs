@@ -50,3 +50,16 @@ test('external interaction bundles and fonts resolve from site root', () => {
     assert.ok(existsSync(new URL('../assets/fonts/goldplay-' + weight + '.woff', import.meta.url)));
   }
 });
+
+
+test('deployment prevents third-party framing and unneeded browser permissions', () => {
+  const config = JSON.parse(source('vercel.json'));
+  const headers = config.headers.flatMap(rule => rule.headers ?? []);
+  const value = name => headers.find(header => header.key === name)?.value ?? '';
+  assert.match(value('Content-Security-Policy'), /frame-ancestors 'none'/);
+  assert.match(value('Content-Security-Policy'), /object-src 'none'/);
+  assert.match(value('Content-Security-Policy'), /base-uri 'self'/);
+  assert.match(value('Permissions-Policy'), /camera=\(\)/);
+  assert.match(value('Permissions-Policy'), /microphone=\(\)/);
+  assert.match(value('Permissions-Policy'), /geolocation=\(\)/);
+});
