@@ -6,20 +6,23 @@ Portfolio of Israel Olurotimi, presenting product design, interaction design, br
 
 ## Architecture
 
-- `index.html`: site markup, CSS and browser interactions
+- `index.html`: site markup and small early-initialization script
+- `assets/css/portfolio.css`: site styles and responsive layouts
+- `assets/js/portfolio.js`: portfolio interactions and page behavior
+- `assets/js/interface-sound.js`: interface sound behavior
 - `assets/`: case-study media, fonts and downloadable CVs
 - `api/`: Vercel serverless integrations for music, books and game scores
 - `sw.js`, `manifest.webmanifest`: offline caching and installation
 - `vercel.json`: deployment headers
-- `tests/`: dependency-free source checks
+- `tests/`: source, security and desktop/mobile Chromium regression checks
 
-The site currently uses a single HTML entry point. Extracting its scripts and styles requires browser regression testing before release.
+The page remains static HTML with external CSS and JavaScript. No frontend framework or build step is required.
 
 ## Develop
 
 With Python 3, run `python3 -m http.server 8000` and open http://localhost:8000. For serverless API routes, use a configured Vercel development environment.
 
-With Node.js 20 or later, run `npm test` for the source checks. There are no runtime npm dependencies.
+With Node.js 20 or later, run `npm install` followed by `npm test` and `npm run check:syntax`. Run `npx playwright install chromium`, start a local HTTP server on port 8765 and run `npm run test:browser` for desktop and mobile smoke tests. The app has no runtime npm dependencies; Playwright is a development-only test dependency.
 
 ## Server environment
 
