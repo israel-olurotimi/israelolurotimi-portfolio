@@ -5,7 +5,7 @@ import { randomBytes, createHash } from 'node:crypto';
 
 const URL_ = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
-// Preview deploys use their own keys so test scores never reach the live board.
+// Separate Redis key prefixes for production and preview scores.
 const P = process.env.VERCEL_ENV === 'production' ? 'pong' : 'pongdev';
 const Z = P + ':scores', KEEP = 50, SHOW = 10;
 
@@ -21,6 +21,26 @@ const run = async (...cmds) => {
 const sha = (s) => createHash('sha256').update(String(s)).digest('hex');
 const calc = (a, b, r, h) => Math.max(0, a * 100 - b * 35 + Math.min(r, 30) * 15 + (a >= 7 ? 500 : 0)) * (h ? 2 : 1);
 const int = (v, max) => (Number.isInteger(v) && v >= 0 && v <= max ? v : null);
+
+export function validateScoreSubmission(body) {
+  const b = body && typeof body === 'object' && !Array.isArray(body) ? body : {};
+  const n = String(b.n || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 3);
+  const you = int(b.you, 7);
+  const cl = int(b.cl, 7);
+  const r = int(b.r, 500);
+  const ms = int(b.ms, 3.6e6);
+  const hard = b.h === 1;
+
+  if (n.length < 2 || you === null || cl === null || r === null || ms === null ||
+      (you !== 7 && cl !== 7) || (you === 7 && cl === 7) || (b.h !== 0 && b.h !== 1)) {
+    return { error: 'bad score' };
+  }
+  if (ms < 1200 * (you + cl)) return { error: 'too fast' };
+  const score = calc(you, cl, r, hard);
+  if (score <= 0) return { error: 'no score' };
+
+  return { n, you, cl, r, ms, hard, score };
+}
 
 async function top() {
   const [flat] = await run(['ZREVRANGE', Z, 0, SHOW - 1, 'WITHSCORES']);
@@ -38,15 +58,20 @@ export default async function handler(req, res) {
   try {
     if (req.method === 'GET') return res.status(200).json({ scores: await top() });
 
-    const b = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : req.body || {};
+    let b;
+    try {
+      b = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : req.body || {};
+    } catch {
+      return res.status(400).json({ error: 'bad request' });
+    }
+    if (!b || typeof b !== 'object' || Array.isArray(b)) {
+      return res.status(400).json({ error: 'bad request' });
+    }
 
     if (req.method === 'POST') {
-      const n = String(b.n || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 3);
-      const you = int(b.you, 20), cl = int(b.cl, 20), r = int(b.r, 500), ms = int(b.ms, 3.6e6);
-      if (n.length < 2 || you === null || cl === null || r === null || ms === null) return res.status(400).json({ error: 'bad score' });
-      if (ms < 1200 * (you + cl)) return res.status(400).json({ error: 'too fast' }); // a point takes longer than this
-      const score = calc(you, cl, r, !!b.h);
-      if (score <= 0) return res.status(400).json({ error: 'no score' });
+      const result = validateScoreSubmission(b);
+      if (result.error) return res.status(400).json({ error: result.error });
+      const { n, score } = result;
 
       const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'x';
       const [gate] = await run(['SET', P + ':rl:' + sha(ip), 1, 'NX', 'EX', 20]);
