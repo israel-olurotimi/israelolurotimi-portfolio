@@ -869,7 +869,7 @@ html:not(.cv) .sec,html:not(.cv) .sec>.frame{width:100%;max-width:100%}
 /* cursor-follow toy makes no sense on phones */
 @media (hover:none),(max-width:700px){.chb{display:none}}
 /* Case studies (SOMA, Lykluk, Revolve, Yadsale) */
-@font-face{font-family:'Goldplay';font-weight:400;font-display:swap;src:url(assets/fonts/goldplay-400.woff) format('woff')}@font-face{font-family:'Goldplay';font-weight:600;font-display:swap;src:url(assets/fonts/goldplay-600.woff) format('woff')}@font-face{font-family:'Goldplay';font-weight:700;font-display:swap;src:url(assets/fonts/goldplay-700.woff) format('woff')}@font-face{font-family:'Goldplay';font-weight:900;font-display:swap;src:url(assets/fonts/goldplay-900.woff) format('woff')}/* Case study scenes shared by SOMA and Lykluk. Colours come from per-project vars on #csf */
+@font-face{font-family:'Goldplay';font-weight:400;font-display:swap;src:url(/assets/fonts/goldplay-400.woff) format('woff')}@font-face{font-family:'Goldplay';font-weight:600;font-display:swap;src:url(/assets/fonts/goldplay-600.woff) format('woff')}@font-face{font-family:'Goldplay';font-weight:700;font-display:swap;src:url(/assets/fonts/goldplay-700.woff) format('woff')}@font-face{font-family:'Goldplay';font-weight:900;font-display:swap;src:url(/assets/fonts/goldplay-900.woff) format('woff')}/* Case study scenes shared by SOMA and Lykluk. Colours come from per-project vars on #csf */
 #csf[data-p=soma]{--pb:#0a0a0b;--pa:#1C4FD8;--pl:#222c52;--ps:#9aa5c4;--pt:#E6ECFD}
 #csf[data-p=lykluk]{--pb:#2a0b3d;--pa:#8B35C0;--pl:#4b2670;--ps:#cbb4e2;--pt:#EFE3F8}
 #csf:is([data-p=soma],[data-p=lykluk],[data-p=revolve],[data-p=yadsale]) :is(.csbar2,.csfoot){background:var(--pb);color:#fff;border-color:var(--pl);z-index:6}
