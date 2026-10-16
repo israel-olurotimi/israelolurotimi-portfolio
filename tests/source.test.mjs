@@ -38,3 +38,15 @@ test('install metadata references bundled icons', () => {
     assert.ok(existsSync(new URL('..' + icon.src, import.meta.url)), icon.src);
   }
 });
+
+test('external interaction bundles and fonts resolve from site root', () => {
+  for (const path of ['/assets/css/portfolio.css', '/assets/js/portfolio.js', '/assets/js/interface-sound.js']) {
+    assert.ok(html.includes('"' + path + '"'), 'HTML must load ' + path);
+    assert.ok(existsSync(new URL('..' + path, import.meta.url)), 'Missing ' + path);
+  }
+  const css = source('assets/css/portfolio.css');
+  for (const weight of [400, 600, 700, 900]) {
+    assert.ok(css.includes('url(/assets/fonts/goldplay-' + weight + '.woff)'), 'Goldplay font URL ' + weight);
+    assert.ok(existsSync(new URL('../assets/fonts/goldplay-' + weight + '.woff', import.meta.url)));
+  }
+});
