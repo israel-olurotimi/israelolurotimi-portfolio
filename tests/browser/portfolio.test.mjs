@@ -37,7 +37,7 @@ test('desktop loads portfolio, case study and CV without script errors', { timeo
     await caseButton.evaluate(button => button.click());
     await page.waitForTimeout(250);
     assert.ok(await page.locator('#cs').evaluate(node => node.classList.contains('show')));
-    await page.locator('#csx').click({ force: true });
+    await page.locator('#csx').evaluate(button => button.click());
     await page.waitForTimeout(250);
     assert.ok(!(await page.locator('#cs').evaluate(node => node.classList.contains('show'))));
     assert.deepEqual(errors, []);
