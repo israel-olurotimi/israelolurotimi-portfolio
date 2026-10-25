@@ -3635,6 +3635,7 @@ function csClose() {
             (function () {
               const t = V(u[0], u[1], v, f);
               if (((J = t), !(t <= 0))) {
+                recordPersonalBest(t);
                 e("subs").textContent = "SCORE " + t;
                 try {
                   e("subi").value = localStorage.io_in || "";
@@ -3777,7 +3778,7 @@ function csClose() {
         requestAnimationFrame(e));
     }),
       new IntersectionObserver((e) => {
-        ((C = e[0].isIntersecting), C && !Q && re());
+        ((C = e[0].isIntersecting), C && !document.hidden && re());
       }).observe(t),
       t.addEventListener("pointerdown", (e) => {
         (R(), q(e));
@@ -3870,182 +3871,188 @@ function csClose() {
           (Z.hidden = !0),
           F(1));
       }));
-    const W = "/api/scores",
-      Y = "io_lb",
-      X = "io_mine",
-      Z = e("sub"),
-      V = (e, t, s, a) =>
-        Math.max(
-          0,
-          100 * e - 35 * t + 15 * Math.min(s, 30) + (e >= 7 ? 500 : 0),
-        ) * (a ? 2 : 1);
-    let U = [],
-      G = !1,
-      K = "",
-      J = 0,
-      Q = !1,
-      ee = {},
-      te = null,
-      se = 0,
-      ae = "";
-    try {
-      ee = JSON.parse(localStorage[X] || "{}");
-    } catch (e) {}
-    const ne = () => {
-        try {
-          localStorage[X] = JSON.stringify(ee);
-        } catch (e) {}
-      },
-      oe = (e) => String(e).replace(/[^A-Za-z0-9]/g, ""),
-      ie = () => {
-        const t = U.slice(0, 10);
-        ((e("lbs").textContent = Q && G ? "ONLINE" : ""),
-          (e("lbe").hidden = t.length > 0),
-          (e("lbl").hidden = !t.length),
-          (e("lbl").innerHTML = t
-            .map((e) => {
-              const t = e.id && Object.prototype.hasOwnProperty.call(ee, e.id);
-              return (
-                '<li class="' +
-                (t ? "mine" : "") +
-                (e.id && e.id === ae ? " lbnew" : "") +
-                '"><span>' +
-                oe(e.n) +
-                "</span><span>" +
-                String(e.s).padStart(5, "0") +
-                "</span>" +
-                (t
-                  ? '<button type="button" class="lbx' +
-                    (te === e.id ? " arm" : "") +
-                    '" data-id="' +
-                    oe(e.id) +
-                    '" aria-label="Delete my score ' +
-                    oe(e.n) +
-                    " " +
-                    e.s +
-                    '">' +
-                    (te === e.id ? "SURE?" : "✕") +
-                    "</button>"
-                  : "<i></i>") +
-                "</li>"
-              );
-            })
-            .join("")),
-          (ae = ""));
-      },
-      ce = (t) => {
-        ((e("lbs").textContent = t), setTimeout(ie, 2200));
-      },
-      le = () => {
-        try {
-          return JSON.parse(localStorage[Y] || "[]");
-        } catch (e) {
-          return [];
-        }
-      };
-    async function re() {
-      Q = !0;
-      try {
-        const e = await fetch(W);
-        if (!e.ok) throw 0;
-        const t = await e.json();
-        if (!Array.isArray(t.scores)) throw 0;
-        ((U = t.scores), (G = !0));
-      } catch (e) {
-        ((G = !1), (U = le()));
-      }
-      ie();
+    const W = "/api/scores", Y = "io_lb", X = "io_mine", Z = e("sub");
+    const V = (you, client, rally, hard) =>
+      Math.max(0, you * 100 - client * 35 + Math.min(rally, 30) * 15 + (you >= 7 ? 500 : 0)) * (hard ? 2 : 1);
+    const readLocal = (key, fallback) => {
+      try { return JSON.parse(localStorage[key] || "null") ?? fallback; }
+      catch { return fallback; }
+    };
+    const writeLocal = (key, value) => {
+      try { localStorage[key] = JSON.stringify(value); } catch {}
+    };
+    let U = [], G = false, J = 0, Q = false;
+    let ee = readLocal(X, {}), personalBest = Number(readLocal("io_best", 0)) || 0;
+    let pendingFetch = null, saving = false, revision = 0, armed = null, armTimer = 0, noticeTimer = 0;
+    const localScores = () => {
+      const scores = readLocal(Y, []);
+      return Array.isArray(scores) ? scores : [];
+    };
+    function recordPersonalBest(score) {
+      if (!Number.isFinite(score) || score <= personalBest) return;
+      personalBest = score;
+      writeLocal("io_best", personalBest);
+      e("lbpersonal").textContent = String(personalBest).padStart(5, "0");
     }
-    (Z.addEventListener("submit", async (t) => {
-      t.preventDefault();
-      const s = e("subi")
-        .value.toUpperCase()
-        .replace(/[^A-Z]/g, "")
-        .slice(0, 3);
-      if (s.length < 2) return;
-      K = s;
-      try {
-        localStorage.io_in = s;
-      } catch (e) {}
-      Z.hidden = !0;
-      const a = {
-        n: s,
-        you: u[0],
-        cl: u[1],
-        r: v,
-        h: f,
-        ms: Math.round(performance.now() - g),
-      };
-      if (G) {
+    const initials = value => String(value).replace(/[^A-Z]/g, "").slice(0, 3);
+    function renderBoard() {
+      const scores = U.slice(0, 10);
+      e("lbs").textContent = Q ? (G ? "LIVE" : "OFFLINE") : "LOADING";
+      e("lbt").textContent = !G && Q && !readLocal("io_lb_shared", null) ? "ON THIS DEVICE" : "GLOBAL TOP 10";
+      e("lbpersonal").textContent = personalBest ? String(personalBest).padStart(5, "0") : "--";
+      e("lbglobal").textContent = G && scores.length ? String(scores[0].s).padStart(5, "0") : "--";
+      e("lbe").hidden = scores.length > 0;
+      e("lbl").hidden = !scores.length;
+      e("lbet").textContent = !Q ? "LOADING SCORES" : G ? "NO SCORES YET" : "CONNECTION UNAVAILABLE";
+      e("lbem").textContent = G ? "Finish a match and save your initials to join the board." : "Reconnect to see everyone's scores. Local results stay on this device.";
+      e("lbhelp").textContent = G ? "Shared with everyone. Updates automatically." : "Offline. Displayed scores may be out of date.";
+      e("lbl").innerHTML = scores.map(score => {
+        const mine = Object.prototype.hasOwnProperty.call(ee, score.id);
+        const canDelete = mine && (G || String(score.id).startsWith("l"));
+        return '<li class="' + (mine ? 'mine' : '') + '"><span>' + initials(score.n) + '</span><span>' +
+          String(score.s).padStart(5, "0") + '</span>' + (canDelete ?
+          '<button type="button" class="lbx' + (armed === score.id ? ' arm' : '') + '" data-id="' +
+          String(score.id).replace(/[^A-Za-z0-9]/g, '') + '" aria-label="Delete my score ' + initials(score.n) + '">' +
+          (armed === score.id ? 'SURE?' : '✕') + '</button>' : '<i></i>') + '</li>';
+      }).join("");
+    }
+    function showNotice(message) {
+      clearTimeout(noticeTimer);
+      e("lbs").textContent = message;
+      noticeTimer = setTimeout(renderBoard, 3500);
+    }
+    function re() {
+      if (pendingFetch) return pendingFetch;
+      const version = revision;
+      pendingFetch = (async () => {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 8000);
         try {
-          const e = await fetch(W, {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify(a),
-          });
-          if (!e.ok) throw 0;
-          const t = await e.json();
-          ((U = t.scores || U),
-            (J = t.score || J),
-            t.id && ((ee[t.id] = t.tok), ne(), (ae = t.id)),
-            ie());
-        } catch (e) {
-          ce("NOT SAVED, RETRY");
+          const response = await fetch(W, { cache: "no-store", signal: controller.signal });
+          if (!response.ok) throw new Error("scores unavailable");
+          const result = await response.json();
+          if (!Array.isArray(result.scores)) throw new Error("invalid scores");
+          if (version !== revision) return;
+          U = result.scores;
+          G = true;
+          writeLocal("io_lb_shared", U);
+          U.filter(score => Object.prototype.hasOwnProperty.call(ee, score.id)).forEach(score => recordPersonalBest(score.s));
+        } catch {
+          if (version !== revision) return;
+          G = false;
+          const cached = readLocal("io_lb_shared", null);
+          U = Array.isArray(cached) ? cached : localScores();
+        } finally {
+          clearTimeout(timeout);
+          Q = true;
+          pendingFetch = null;
+          renderBoard();
         }
-        return;
+      })();
+      return pendingFetch;
+    }
+    localScores().forEach(score => recordPersonalBest(score.s));
+    renderBoard();
+    const refreshWhenVisible = () => {
+      if (C && !document.hidden && !saving) re();
+    };
+    setInterval(refreshWhenVisible, 15000);
+    document.addEventListener("visibilitychange", refreshWhenVisible);
+    addEventListener("focus", refreshWhenVisible);
+    addEventListener("online", refreshWhenVisible);
+    addEventListener("storage", event => {
+      if (["io_best", X].includes(event.key)) {
+        ee = readLocal(X, {});
+        personalBest = Number(readLocal("io_best", 0)) || 0;
+        renderBoard();
       }
-      const n = le(),
-        o = "l" + Date.now().toString(36);
-      (n.push({ n: s, s: J, id: o }),
-        n.sort((e, t) => t.s - e.s),
-        (n.length = Math.min(n.length, 50)),
-        (ee[o] = ""),
-        ne(),
-        (ae = o));
+    });
+    Z.addEventListener("submit", async event => {
+      event.preventDefault();
+      if (saving) return;
+      const name = initials(e("subi").value.toUpperCase());
+      if (name.length < 2) return;
+      saving = true;
+      Z.querySelectorAll("button,input").forEach(control => control.disabled = true);
       try {
-        localStorage[Y] = JSON.stringify(n);
-      } catch (e) {}
-      ((U = n), ie());
-    }),
-      (e("subx").onclick = () => (Z.hidden = !0)),
-      ie(),
-      e("lbl").addEventListener("click", async (e) => {
-        const t = e.target.closest(".lbx");
-        if (!t) return;
-        const s = t.dataset.id;
-        if (te !== s)
-          return (
-            (te = s),
-            clearTimeout(se),
-            (se = setTimeout(() => {
-              ((te = null), ie());
-            }, 2500)),
-            void ie()
-          );
-        ((te = null), clearTimeout(se));
-        const a = U.find((e) => e.id === s);
-        if (G)
+        localStorage.io_in = name;
+      } catch {}
+      const body = { n: name, you: u[0], cl: u[1], r: v, h: f, ms: Math.round(performance.now() - g) };
+      try {
+        if (!G) await re();
+        revision++;
+        if (G) {
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 10000);
+          let response;
           try {
-            const e = await fetch(W, {
-              method: "DELETE",
-              headers: { "content-type": "application/json" },
-              body: JSON.stringify({ id: s, n: a && a.n, tok: ee[s] }),
-            });
-            if (!e.ok) throw 0;
-            const t = await e.json();
-            U = t.scores || U.filter((e) => e.id !== s);
-          } catch (e) {
-            return (ie(), void ce("NOT DELETED"));
-          }
-        else {
-          const t = le().filter((e) => e.id !== s);
-          try {
-            localStorage[Y] = JSON.stringify(t);
-          } catch (e) {}
-          U = t;
+            response = await fetch(W, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body), signal: controller.signal });
+          } finally { clearTimeout(timeout); }
+          if (!response.ok) throw new Error("save failed");
+          const result = await response.json();
+          U = result.scores || U;
+          J = result.score || J;
+          if (result.id && result.tok) { ee[result.id] = result.tok; writeLocal(X, ee); }
+          writeLocal("io_lb_shared", U);
+          recordPersonalBest(J);
+          renderBoard();
+          showNotice("SAVED TO GLOBAL BOARD");
+        } else {
+          const scores = localScores();
+          const id = "l" + Date.now().toString(36);
+          scores.push({ n: name, s: J, id });
+          scores.sort((a, b) => b.s - a.s);
+          scores.length = Math.min(scores.length, 50);
+          ee[id] = "";
+          writeLocal(X, ee);
+          writeLocal(Y, scores);
+          recordPersonalBest(J);
+          if (!readLocal("io_lb_shared", null)) U = scores;
+          renderBoard();
+          showNotice("SAVED ON THIS DEVICE");
         }
-        (delete ee[s], ne(), ie());
-      }));
+        Z.hidden = true;
+      } catch {
+        Z.hidden = false;
+        showNotice("NOT SAVED. TRY AGAIN");
+      } finally {
+        saving = false;
+        Z.querySelectorAll("button,input").forEach(control => control.disabled = false);
+      }
+    });
+    e("subx").onclick = () => { if (!saving) Z.hidden = true; };
+    e("lbl").addEventListener("click", async event => {
+      const button = event.target.closest(".lbx");
+      if (!button || saving) return;
+      const id = button.dataset.id;
+      if (armed !== id) {
+        armed = id;
+        clearTimeout(armTimer);
+        armTimer = setTimeout(() => { armed = null; renderBoard(); }, 2500);
+        return renderBoard();
+      }
+      armed = null;
+      clearTimeout(armTimer);
+      saving = true;
+      revision++;
+      try {
+        if (id.startsWith("l")) {
+          const scores = localScores().filter(score => score.id !== id);
+          writeLocal(Y, scores);
+          if (!G) U = scores;
+        } else {
+          const response = await fetch(W, { method: "DELETE", headers: { "content-type": "application/json" }, body: JSON.stringify({ id, tok: ee[id] }) });
+          if (!response.ok) throw new Error("delete failed");
+          const result = await response.json();
+          U = result.scores || U.filter(score => score.id !== id);
+          writeLocal("io_lb_shared", U);
+        }
+        delete ee[id];
+        writeLocal(X, ee);
+        renderBoard();
+      } catch { renderBoard(); showNotice("NOT DELETED. TRY AGAIN"); }
+      finally { saving = false; }
+    });
   })(),
   (function () {
     const e = [
