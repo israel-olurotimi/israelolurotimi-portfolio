@@ -1,5 +1,5 @@
-const CACHE = 'io-launch-v9';
-const CORE = ['/', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/assets/css/portfolio.css', '/assets/js/portfolio.js', '/assets/js/interface-sound.js'];
+const CACHE = 'io-launch-v10';
+const CORE = ['/', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/assets/css/portfolio.css?v=20261025-archive', '/assets/js/portfolio.js?v=20261025-archive', '/assets/js/interface-sound.js?v=20261025-archive'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
 });
