@@ -9567,7 +9567,3 @@ html.pan #cur {
   width: 0;
   height: 0;
 }
-
-.archive-grade-beach {
-  filter: brightness(1.08) contrast(1.06) saturate(1.14) sepia(0.06);
-}
