@@ -4465,7 +4465,7 @@ function csClose() {
           r: "Brand, creative direction",
           t: "Phone photo",
           img: "assets/archive/a0.webp",
-          note: "the posts did not design themselves. this cup helped a lot ☕",
+          note: "coffee, then back to it.",
         },
         {
           k: "in",
@@ -4477,7 +4477,7 @@ function csClose() {
           r: "Brand identity",
           t: "Phone photo",
           img: "assets/archive/a1.webp",
-          note: "checking the R on a curved monitor. it still holds up. i am as surprised as you are.",
+          note: "the full system, all in one place.",
         },
         {
           k: "out",
@@ -4489,7 +4489,7 @@ function csClose() {
           r: "Photo",
           t: "Phone photo",
           img: "assets/archive/a2.webp",
-          note: "checkers on the table, a very orange cup. nobody is working. everybody is losing.",
+          note: "a good reason to put the phone down.",
         },
         {
           k: "out",
@@ -4501,7 +4501,7 @@ function csClose() {
           r: "Packaging",
           t: "Phone photo",
           img: "assets/archive/a3.webp",
-          note: 'every pouch on one screen. the calm before "can we see another colourway?"',
+          note: "seeing the whole range come together.",
         },
         {
           k: "out",
@@ -4513,7 +4513,7 @@ function csClose() {
           r: "Print design",
           t: "Phone photo",
           img: "assets/archive/a4.webp",
-          note: 'one question per card. "what is one thing you expect from a friendship?" dinner just got serious 👀',
+          note: "one good question can carry the conversation.",
         },
         {
           k: "out",
@@ -4525,7 +4525,7 @@ function csClose() {
           r: "Packaging",
           t: "Phone photo",
           img: "assets/archive/a5.webp",
-          note: 'print never looks like the screen. we held them side by side and agreed it is "close enough" 🤫',
+          note: "always a good feeling seeing it in print.",
         },
         {
           k: "out",
@@ -4537,7 +4537,7 @@ function csClose() {
           r: "Photo",
           t: "Phone photo",
           img: "assets/archive/a6.webp",
-          note: "iced tea, laptop, breeze. productivity: allegedly.",
+          note: "a change of scenery helps.",
         },
         {
           k: "out",
@@ -4549,7 +4549,7 @@ function csClose() {
           r: "Screenshot",
           t: "Phone screenshot",
           img: "assets/archive/a7.webp",
-          note: "flowers, tea blends and a sanitizer bottle. peak wellness aesthetic.",
+          note: "a little corner of wellanin.",
         },
         {
           k: "out",
@@ -4560,9 +4560,8 @@ function csClose() {
           y: "2026",
           r: "Photo",
           t: "Phone photo",
-          img: "assets/archive/a8.webp",
-          grade: "beach",
-          note: "no export button for this one.",
+          img: "assets/archive/a8-graded.webp",
+          note: "could stay here a little longer.",
         },
         {
           k: "in",
@@ -4574,7 +4573,7 @@ function csClose() {
           r: "Screenshot",
           t: "Phone screenshot",
           img: "assets/archive/a9.webp",
-          note: '"intentional blend for intentional moments." even the tea has a brand voice 🍵',
+          note: "a small reminder to slow down.",
         },
         {
           k: "out",
@@ -4586,7 +4585,7 @@ function csClose() {
           r: "Photo",
           t: "Phone photo",
           img: "assets/archive/a10.webp",
-          note: "best colour palette i saw all week. i ate it.",
+          note: "a good start to the day.",
         },
         {
           k: "out",
@@ -4598,7 +4597,7 @@ function csClose() {
           r: "Photo",
           t: "Phone photo",
           img: "assets/archive/a11.webp",
-          note: "lunch on the left, a motion timeline on the right. both going cold.",
+          note: "lunch break. the timeline can wait.",
         },
       ],
       t = (e) => document.getElementById(e);
@@ -4618,7 +4617,7 @@ function csClose() {
               '">' +
               (e.img
                 ? (t % 3 == 1 ? '<i class="plt"></i>' : "") +
-                  '<span class="plp' + (e.grade === "beach" ? " archive-grade-beach" : "") + '" style="aspect-ratio:' +
+                  '<span class="plp" style="aspect-ratio:' +
                   e.a +
                   '" data-bg="' +
                   e.img +
@@ -4647,7 +4646,7 @@ function csClose() {
       t("ins").innerHTML = s
         ? '<div class="w"><button type="button" class="pill2" data-archive-close aria-label="Close archive preview">Close ×</button></div>' +
           (s.img
-            ? '<div class="w ip"><img class="' + (s.grade === "beach" ? "archive-grade-beach" : "") + '" src="' +
+            ? '<div class="w ip"><img src="' +
               s.img +
               '" alt="' +
               s.n +
@@ -4697,7 +4696,7 @@ function csClose() {
         t.c +
         '">' +
         (t.img
-          ? '<img class="' + (t.grade === "beach" ? "archive-grade-beach" : "") + '" src="' + t.img + '" alt="' + t.n + ": " + t.d + '">'
+          ? '<img src="' + t.img + '" alt="' + t.n + ": " + t.d + '">'
           : "") +
         '</div><div class="axt"><h3>' +
         t.n +
