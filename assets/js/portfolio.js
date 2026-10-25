@@ -3904,8 +3904,8 @@ function csClose() {
       e("lbe").hidden = scores.length > 0;
       e("lbl").hidden = !scores.length;
       e("lbet").textContent = !Q ? "LOADING SCORES" : G ? "NO SCORES YET" : "CONNECTION UNAVAILABLE";
-      e("lbem").textContent = G ? "Finish a match and save your initials to join the board." : "Reconnect to see everyone's scores. Local results stay on this device.";
-      e("lbhelp").textContent = G ? "Shared with everyone. Updates automatically." : "Offline. Displayed scores may be out of date.";
+      e("lbem").textContent = !Q ? "Fetching the shared leaderboard." : G ? "Finish a match and save your initials to join the board." : "Reconnect to see everyone's scores. Local results stay on this device.";
+      e("lbhelp").textContent = !Q ? "Fetching the shared leaderboard." : G ? "Shared with everyone. Updates automatically." : "Offline. Displayed scores may be out of date.";
       e("lbl").innerHTML = scores.map(score => {
         const mine = Object.prototype.hasOwnProperty.call(ee, score.id);
         const canDelete = mine && (G || String(score.id).startsWith("l"));
