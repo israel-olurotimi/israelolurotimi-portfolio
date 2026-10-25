@@ -4561,6 +4561,7 @@ function csClose() {
           r: "Photo",
           t: "Phone photo",
           img: "assets/archive/a8.webp",
+          grade: "beach",
           note: "no export button for this one.",
         },
         {
@@ -4617,7 +4618,7 @@ function csClose() {
               '">' +
               (e.img
                 ? (t % 3 == 1 ? '<i class="plt"></i>' : "") +
-                  '<span class="plp" style="aspect-ratio:' +
+                  '<span class="plp' + (e.grade === "beach" ? " archive-grade-beach" : "") + '" style="aspect-ratio:' +
                   e.a +
                   '" data-bg="' +
                   e.img +
@@ -4646,7 +4647,7 @@ function csClose() {
       t("ins").innerHTML = s
         ? '<div class="w"><button type="button" class="pill2" data-archive-close aria-label="Close archive preview">Close ×</button></div>' +
           (s.img
-            ? '<div class="w ip"><img src="' +
+            ? '<div class="w ip"><img class="' + (s.grade === "beach" ? "archive-grade-beach" : "") + '" src="' +
               s.img +
               '" alt="' +
               s.n +
@@ -4656,7 +4657,6 @@ function csClose() {
             ["NAME", s.n],
             ["YEAR", s.y],
             ["ROLE", s.r],
-            ["TOOLS", s.t],
           ]
             .map(([e, t]) => "<div><span>" + e + "</span>" + t + "</div>")
             .join("") +
@@ -4697,7 +4697,7 @@ function csClose() {
         t.c +
         '">' +
         (t.img
-          ? '<img src="' + t.img + '" alt="' + t.n + ": " + t.d + '">'
+          ? '<img class="' + (t.grade === "beach" ? "archive-grade-beach" : "") + '" src="' + t.img + '" alt="' + t.n + ": " + t.d + '">'
           : "") +
         '</div><div class="axt"><h3>' +
         t.n +
@@ -4707,8 +4707,6 @@ function csClose() {
         t.y +
         "</div><div><span>ROLE</span>" +
         t.r +
-        "</div><div><span>TOOLS</span>" +
-        t.t +
         '</div></div><div class="axn"><span>NOTE</span>' +
         (t.note || "") +
         '</div><div class="axf"><button type="button" class="pill2" data-n="-1">◀ Prev</button><button type="button" class="pill2" data-n="1">Next ▶</button></div></div>'),
