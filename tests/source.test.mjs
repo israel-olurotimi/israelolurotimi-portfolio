@@ -41,7 +41,7 @@ test('install metadata references bundled icons', () => {
 
 test('external interaction bundles and fonts resolve from site root', () => {
   for (const path of ['/assets/css/portfolio.css', '/assets/js/portfolio.js', '/assets/js/interface-sound.js']) {
-    assert.ok(html.includes('"' + path + '"'), 'HTML must load ' + path);
+    assert.ok((html.includes('"' + path + '"') || html.includes('"' + path + '?v=')), 'HTML must load ' + path);
     assert.ok(existsSync(new URL('..' + path, import.meta.url)), 'Missing ' + path);
   }
   const css = source('assets/css/portfolio.css');
