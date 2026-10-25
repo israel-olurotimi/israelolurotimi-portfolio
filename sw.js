@@ -1,5 +1,5 @@
-const CACHE = 'io-launch-v14';
-const CORE = ['/', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/assets/css/portfolio.css?v=20261025-scoring-guide', '/assets/js/portfolio.js?v=20261025-scoring-guide', '/assets/js/interface-sound.js?v=20261025-scoring-guide'];
+const CACHE = 'io-launch-v15';
+const CORE = ['/', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/assets/css/portfolio.css?v=20261025-game-bento', '/assets/js/portfolio.js?v=20261025-game-bento', '/assets/js/interface-sound.js?v=20261025-game-bento'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)).then(() => self.skipWaiting()));
 });
