@@ -9573,3 +9573,15 @@ html.pan #cur {
 .lb-best span { font: 10px "Silkscreen", monospace; color: var(--soft); }
 .lb-best b { font: 20px "Silkscreen", monospace; color: var(--ink); overflow-wrap: anywhere; }
 .lb-best small { font-size: 11px; color: var(--soft); }
+
+.pg-scoring { margin: 12px 0; border: 1px solid var(--line); }
+.pg-scoring summary { grid-template-columns: 1fr auto; gap: 8px; padding: 10px; font-size: 12px; font-weight: 600; }
+.pg-scoring summary::after { font-size: 18px; }
+.pg-score-guide { padding: 0 10px 10px; font-size: 12px; line-height: 1.55; }
+.pg-score-guide table { width: 100%; border-collapse: collapse; }
+.pg-score-guide caption { text-align: left; padding: 3px 0 8px; color: var(--soft); }
+.pg-score-guide th, .pg-score-guide td { padding: 7px 0; border-top: 1px solid var(--line); text-align: left; vertical-align: top; }
+.pg-score-guide th { font-weight: 400; padding-right: 8px; }
+.pg-score-guide td { text-align: right; white-space: nowrap; font-weight: 600; }
+.pg-score-guide p { margin: 10px 0 0; }
+.pg-score-example { border-top: 1px solid var(--line); padding-top: 10px; }
