@@ -9567,3 +9567,9 @@ html.pan #cur {
   width: 0;
   height: 0;
 }
+
+.lb-best { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 10px 0 14px; border-top: 2px dotted var(--line); }
+.lb-best div { display: grid; gap: 5px; min-width: 0; }
+.lb-best span { font: 10px "Silkscreen", monospace; color: var(--soft); }
+.lb-best b { font: 20px "Silkscreen", monospace; color: var(--ink); overflow-wrap: anywhere; }
+.lb-best small { font-size: 11px; color: var(--soft); }
