@@ -4601,13 +4601,11 @@ function csClose() {
         },
       ],
       t = (e) => document.getElementById(e);
-    let s = "all",
-      a = -1;
+    let a = -1;
     function n() {
       ((t("awl").innerHTML = e
         .map((e, t) =>
-          e.k === s || "all" === s
-            ? '<button class="tl' +
+          '<button class="tl' +
               (e.img ? " im" + (t % 3 == 1 ? " t" : "") : "") +
               '" type="button" data-i="' +
               t +
@@ -4623,25 +4621,17 @@ function csClose() {
                   e.a +
                   '" data-bg="' +
                   e.img +
-                  '"><span class="tg">' +
-                  ("in" === e.k ? "PORTFOLIO" : "BEYOND") +
-                  '</span></span><span class="plc"><b>' +
+                  '"></span><span class="plc"><b>' +
                   e.n +
                   "</b></span>"
-                : '<span class="tg">' +
-                  ("in" === e.k ? "PORTFOLIO" : "BEYOND") +
-                  "</span><span><b>" +
+                : "<span><b>" +
                   e.n +
                   "</b><em>" +
                   e.d +
                   "</em></span>") +
-              "</button>"
-            : "",
+              "</button>",
         )
         .join("")),
-        t("axf")
-          .querySelectorAll("button")
-          .forEach((e) => e.setAttribute("aria-pressed", e.dataset.f === s)),
         a >= 0 && o());
     }
     function o() {
@@ -4664,10 +4654,6 @@ function csClose() {
             : "") +
           [
             ["NAME", s.n],
-            [
-              "SHELF",
-              "in" === s.k ? "In the portfolio" : "Beyond the portfolio",
-            ],
             ["YEAR", s.y],
             ["ROLE", s.r],
             ["TOOLS", s.t],
@@ -4679,27 +4665,7 @@ function csClose() {
           "</div>"
         : '<div class="w"><span>INSPECTOR</span>Select a frame to inspect it.</div>';
     }
-    ((t("axf").innerHTML = [
-      ["all", "All"],
-      ["in", "In the portfolio"],
-      ["out", "Beyond it"],
-    ]
-      .map(
-        ([e, t]) =>
-          '<button type="button" data-f="' +
-          e +
-          '" aria-pressed="' +
-          ("all" === e) +
-          '">' +
-          t +
-          "</button>",
-      )
-      .join("")),
-      t("axf").addEventListener("click", (e) => {
-        const t = e.target.closest("button");
-        t && ((s = t.dataset.f), (a = -1), n(), i(), p());
-      }),
-      t("awl").addEventListener("click", (e) => {
+    t("awl").addEventListener("click", (e) => {
         const s = e.target.closest(".tl");
         s &&
           ((a = +s.dataset.i),
@@ -4709,17 +4675,15 @@ function csClose() {
           o(),
           i(),
           c.matches && d());
-      }));
+      });
     const c = matchMedia("(max-width:820px)"),
       l = document.createElement("div");
     ((l.className = "axs"), (l.hidden = !0), document.body.appendChild(l));
-    const r = () =>
-      e.map((e, t) => t).filter((t) => "all" === s || e[t].k === s);
+    const r = () => e.map((e, t) => t);
     function d() {
       const t = e[a],
         s = r(),
-        n = s.indexOf(a) + 1,
-        o = "in" === t.k ? "PORTFOLIO" : "BEYOND";
+        n = s.indexOf(a) + 1;
       ((l.innerHTML =
         '<div class="axb" data-x="1"></div><div class="axc" role="dialog" aria-modal="true" aria-label="' +
         t.n +
@@ -4735,9 +4699,7 @@ function csClose() {
         (t.img
           ? '<img src="' + t.img + '" alt="' + t.n + ": " + t.d + '">'
           : "") +
-        '<span class="tg">' +
-        o +
-        '</span></div><div class="axt"><h3>' +
+        '</div><div class="axt"><h3>' +
         t.n +
         "</h3><p>" +
         t.d +
@@ -5277,11 +5239,8 @@ function csClose() {
       }),
         e());
     }
-    const a = document.getElementById("arb"),
-      n = document.getElementById("axf");
-    a &&
-      (a.addEventListener("click", () => e(a)),
-      n && n.addEventListener("click", () => e(a)));
+    const a = document.getElementById("arb");
+    if (a) a.addEventListener("click", () => e(a));
   })(),
   (function () {
     const e = document.getElementById("pop"),
