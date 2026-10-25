@@ -8882,12 +8882,13 @@ html:not(.cv) .sec > .frame {
 }
 .sxs .wmz {
   display: block;
-  background: #fff;
-  -webkit-mask: var(--m) center/100% 100% no-repeat;
-  mask: var(--m) center/100% 100% no-repeat;
+  object-fit: contain;
   aspect-ratio: 4.444;
   width: min(100%, 520px);
+  height: auto;
 }
+.sxs .wmw { width: 100%; }
+
 .sxs .wpls {
   display: flex;
   gap: clamp(8px, 2vw, 16px);
@@ -8914,7 +8915,7 @@ html:not(.cv) .sec > .frame {
   background: #ededed;
 }
 .sxs .wpl.b .wmz {
-  background: #0a0a0b;
+  filter: brightness(0);
 }
 .sxs .wpl.c {
   background: #1d4ed8;

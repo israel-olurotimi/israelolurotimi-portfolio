@@ -315,30 +315,15 @@ function fav() {
   }),
   document.fonts && document.fonts.ready.then(fav),
   apply());
-const me = $("#me"),
-  k = R ? 1 : 0.1;
-let mx = -60,
-  my = -60,
-  x = -60,
-  y = -60;
+const me = $("#me");
 if (fine) {
-  let e = 0;
-  const t = () => {
-    ((x += (mx - x) * k),
-      (y += (my - y) * k),
-      (me.style.transform = "translate3d(" + x + "px," + y + "px,0)"),
-      (e =
-        Math.abs(mx - x) + Math.abs(my - y) > 0.1
-          ? requestAnimationFrame(t)
-          : 0));
-  };
-  (addEventListener("mousemove", (s) => {
-    ((mx = s.clientX),
-      (my = s.clientY),
-      (me.style.opacity = 1),
-      e || (e = requestAnimationFrame(t)));
-  }),
-    document.addEventListener("mouseleave", () => (me.style.opacity = 0)));
+  addEventListener("pointermove", event => {
+    if (event.pointerType !== "mouse") return;
+    me.style.transform = `translate3d(${event.clientX}px,${event.clientY}px,0)`;
+    me.style.opacity = 1;
+  }, { passive: true });
+  document.addEventListener("mouseleave", () => me.style.opacity = 0);
+  addEventListener("blur", () => me.style.opacity = 0);
 }
 const cur = $("#cur"),
   curT = $("#curT"),
@@ -729,12 +714,16 @@ function reset() {
           (t.removeEventListener("pointermove", m),
             t.removeEventListener("pointerup", f),
             t.removeEventListener("pointercancel", f),
+            t.removeEventListener("lostpointercapture", f),
+            removeEventListener("blur", f),
             e.classList.remove("dg"),
             H.classList.remove("drag"));
         };
       (t.addEventListener("pointermove", m),
         t.addEventListener("pointerup", f),
-        t.addEventListener("pointercancel", f));
+        t.addEventListener("pointercancel", f),
+        t.addEventListener("lostpointercapture", f),
+        addEventListener("blur", f, { once: true }));
     });
 }),
   ($("#zr").onclick = reset),
@@ -751,9 +740,12 @@ function reset() {
   addEventListener(
     "wheel",
     (e) => {
-      H.classList.contains("cv") &&
-        (e.ctrlKey || e.metaKey) &&
-        (e.preventDefault(), setZ(Z * (e.deltaY < 0 ? 1.08 : 0.92)));
+      if (!H.classList.contains("cv") || !(e.ctrlKey || e.metaKey) ||
+          e.target.closest("input,textarea,select,[contenteditable]") ||
+          document.querySelector(".cszv.show,.axs:not([hidden])")) return;
+      e.preventDefault();
+      const delta = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1);
+      if (delta) setZ(Z * Math.exp(-Math.max(-100, Math.min(100, delta)) * .002));
     },
     { passive: !1 },
   ));
@@ -836,13 +828,15 @@ const onMq = () => {
             (removeEventListener("pointermove", r),
               removeEventListener("pointerup", d),
               removeEventListener("pointercancel", d),
+              removeEventListener("blur", d),
               (t = null),
               H.classList.remove("pan"),
               e || H.classList.remove("hand"));
           };
         (addEventListener("pointermove", r),
           addEventListener("pointerup", d),
-          addEventListener("pointercancel", d));
+          addEventListener("pointercancel", d),
+          addEventListener("blur", d, { once: true }));
       },
       !0,
     ));
@@ -1081,15 +1075,7 @@ const mk = (e, t) => {
       ) +
       n(
         "",
-        '<div class="wmw"><span class="wmz big" role="img" aria-label="The SOMA wordmark" style="--m:url(' +
-          e("wordmark") +
-          ')"></span><div class="wpls"><span class="wpl a"><span class="wmz" style="--m:url(' +
-          e("wordmark") +
-          ')"></span></span><span class="wpl b"><span class="wmz" style="--m:url(' +
-          e("wordmark") +
-          ')"></span></span><span class="wpl c"><span class="wmz" style="--m:url(' +
-          e("wordmark") +
-          ')"></span></span></div></div>',
+        `<div class="wmw"><img class="wmz big" alt="The SOMA wordmark" src="${e("wordmark")}"><div class="wpls">${["a", "b", "c"].map(style => `<span class="wpl ${style}"><img class="wmz" alt="SOMA" src="${e("wordmark")}"></span>`).join("")}</div></div>`,
       ) +
       n(
         "l",
@@ -1468,6 +1454,12 @@ function csSt(e, t, s) {
       .querySelectorAll("[data-go]")
       .forEach((e) => e.classList.toggle("on", e.dataset.go === t)));
 }
+const csDispose = [];
+function csLater(fn, delay) {
+  const id = setTimeout(fn, delay);
+  csDispose.push(() => clearTimeout(id));
+}
+function csCleanup() { csDispose.splice(0).forEach(dispose => dispose()); }
 function csFx(e) {
   if (
     matchMedia("(prefers-reduced-motion:reduce)").matches ||
@@ -1483,16 +1475,17 @@ function csFx(e) {
           (s.classList.add("in"),
             t.unobserve(s),
             a &&
-              (setTimeout(() => {
+              (csLater(() => {
                 a.dataset.u || csSt(a, "tree");
               }, 2400),
-              setTimeout(() => {
+              csLater(() => {
                 a.dataset.u || csSt(a, "pie");
               }, 5800)));
         }
       }),
     { rootMargin: "0px 0px -8% 0px" },
   );
+  csDispose.push(() => t.disconnect());
   e.querySelectorAll(".sxs").forEach((e) => {
     (e.classList.add("fx"),
       e
@@ -1512,19 +1505,26 @@ function csCoin(e) {
     c = 0,
     l = 1;
   const r = () => s.style.setProperty("--ry", n + "deg");
-  "IntersectionObserver" in window &&
-    new IntersectionObserver((e) => {
-      l = e[0].isIntersecting;
-    }).observe(t);
+  let frame = 0, disposed = false;
+  const observer = "IntersectionObserver" in window ? new IntersectionObserver(entries => {
+    l = entries[0].isIntersecting;
+  }) : null;
+  if (observer) observer.observe(t);
   const d = () => {
-    t.isConnected &&
-      (l &&
-        !a &&
-        !document.hidden &&
-        document.getElementById("cs").classList.contains("show") &&
-        (i || (o += 0.025 * (0.6 - o)), (n += o), r()),
-      requestAnimationFrame(d));
+    if (disposed) return;
+    if (l && !a && !document.hidden && document.getElementById("cs").classList.contains("show")) {
+      if (!i) { o += .025 * (.6 - o); n += o; r(); }
+    }
+    frame = requestAnimationFrame(d);
   };
+  const release = () => { i = 0; };
+  addEventListener("blur", release);
+  csDispose.push(() => {
+    disposed = true;
+    cancelAnimationFrame(frame);
+    if (observer) observer.disconnect();
+    removeEventListener("blur", release);
+  });
   (r(),
     a || d(),
     t.addEventListener("pointerdown", (e) => {
@@ -1536,10 +1536,10 @@ function csCoin(e) {
     t.addEventListener("pointermove", (e) => {
       if (i) {
         const t = e.clientX - c;
-        ((c = e.clientX), (n += 0.35 * t), (o = 0.35 * t), r());
+        ((c = e.clientX), (n += 0.35 * t), (o = Math.max(-12, Math.min(12, 0.35 * t))), r());
       }
     }),
-    ["pointerup", "pointercancel"].forEach((e) =>
+    ["pointerup", "pointercancel", "lostpointercapture"].forEach((e) =>
       t.addEventListener(e, () => {
         i = 0;
       }),
@@ -1560,7 +1560,7 @@ function csCoin(e) {
           e
             .querySelectorAll(".cc button")
             .forEach((e) => e.classList.toggle("on", e === s)),
-          (o = 24));
+          (o = 4));
       }),
     ));
 }
@@ -1622,6 +1622,7 @@ function csVid(e) {
     { threshold: 0.35 },
   );
   t.forEach((e) => s.observe(e));
+  csDispose.push(() => { s.disconnect(); t.forEach(video => video.pause()); });
 }
 function csBody(e) {
   const t = mk(
@@ -1715,6 +1716,7 @@ csL.addEventListener("pointerdown", () => (csS.dataset.moved = 1), !0);
 let ci = 0,
   csLast = null;
 function csShow(e) {
+  csCleanup();
   ci = e;
   const t = CS[e];
   ((csL.textContent = "Case study · " + t.t),
@@ -1765,6 +1767,7 @@ function csPlace() {
     }
 }
 function csClose() {
+  csCleanup();
   (csS.classList.remove("show"),
     H.classList.remove("cso"),
     (document.body.style.overflow = ""),
@@ -1789,7 +1792,7 @@ function csClose() {
       a = document.getElementById("czn"),
       n = document.getElementById("csb");
     let o = [],
-      i = 0;
+      i = 0, back = null, overflow = "";
     const c = () => {
         const n = o[i];
         if (!n) return;
@@ -1806,6 +1809,8 @@ function csClose() {
       },
       l = () => {
         (e.classList.remove("show", "z"), t.removeAttribute("src"));
+        document.body.style.overflow = overflow;
+        if (back && back.isConnected) back.focus({ preventScroll: true });
       },
       r = (e) => {
         o.length && ((i = (i + e + o.length) % o.length), c());
@@ -1817,6 +1822,9 @@ function csClose() {
       a &&
         (t.preventDefault(),
         ((t) => {
+          back = document.activeElement;
+          overflow = document.body.style.overflow;
+          document.body.style.overflow = "hidden";
           ((o = [...n.querySelectorAll("figure")].filter((e) =>
             e.querySelector("img"),
           )),
@@ -1838,6 +1846,16 @@ function csClose() {
       addEventListener(
         "keydown",
         (t) => {
+          if (e.classList.contains("show") && t.key === "Tab") {
+            const buttons = [...e.querySelectorAll("button")].filter(button => !button.closest("[hidden]"));
+            const first = buttons[0], last = buttons[buttons.length - 1];
+            if (!e.contains(document.activeElement) || (!t.shiftKey && document.activeElement === last)) {
+              t.preventDefault(); first.focus();
+            } else if (t.shiftKey && document.activeElement === first) {
+              t.preventDefault(); last.focus();
+            }
+            return;
+          }
           e.classList.contains("show") &&
             ("Escape" === t.key
               ? (t.stopImmediatePropagation(), l())
@@ -4546,7 +4564,7 @@ function csClose() {
           note: "no export button for this one.",
         },
         {
-          k: "out",
+          k: "in",
           n: "wellanin, the tea card",
           a: "640/1038",
           c: "#2A9D8F",
